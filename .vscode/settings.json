@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        ".env": "dotenv",
+        "kernel.h": "c",
+        "common.h": "c"
+    }
+}
