@@ -2,9 +2,9 @@
 
 # CPU 模式
 
--   M-mode: OpenSBI（即 BIOS）运行的模式
--   S-mode: 内核运行的模式，又称“内核模式”
--   U-mode: 应用运行的模式，又称“用户模式”
+-   M-mode: (machine) OpenSBI（即 BIOS）运行的模式
+-   S-mode: (supervisor) 内核运行的模式，又称“内核模式”
+-   U-mode: (user) 应用运行的模式，又称“用户模式”
 
 # CSR 特权指令
 
