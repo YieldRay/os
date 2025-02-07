@@ -2,6 +2,7 @@
 set -xue
 
 QEMU=qemu-system-riscv32
+OBJCOPY=/opt/homebrew/opt/llvm/bin/llvm-objcopy
 
 # clang 路径和编译器标志
 CC=/opt/homebrew/opt/llvm/bin/clang # Ubuntu 用户：使用 CC=clang
@@ -10,14 +11,21 @@ CFLAGS="-std=c11 -O2 -g3 -Wall -Wextra --target=riscv32-unknown-elf -fno-stack-p
 # -ffreestanding       不使用主机环境标准库
 # -nostdlib            不链接标准库
 
+# 构建一个用户空间程序，并转换为原始二进制（而不是elf），因为我们的操作系统很简单
+$CC $CFLAGS -Wl,-Tuser.ld -Wl,-Map=shell.map -o shell.elf shell.c user.c common.c
+$OBJCOPY --set-section-flags .bss=alloc,contents -O binary shell.elf shell.bin
+$OBJCOPY -Ibinary -Oelf32-littleriscv shell.bin shell.bin.o
+
 # 构建内核
 $CC $CFLAGS -Wl,-Tkernel.ld -Wl,-Map=kernel.map -o kernel.elf \
-    kernel.c common.c
+    kernel.c common.c shell.bin.o
 # -Wl,-Tkernel.ld      指定链接器脚本
 # -Wl,-Map=kernel.map  输出映射文件（链接器分配结果）
 
 # 启动 QEMU
-$QEMU -machine virt -bios default -nographic -serial mon:stdio --no-reboot -kernel kernel.elf
+$QEMU -machine virt -bios default -nographic -serial mon:stdio --no-reboot \
+    -d unimp,guest_errors,int,cpu_reset -D qemu.log \
+    -kernel kernel.elf
 # -machine virt      启动一个 virt 机器。可以用 -machine '?' 选项查看其他支持的机器
 # -bios default      使用默认固件（在本例中是 OpenSBI）
 # -nographic         启动 QEMU 时不使用 GUI 窗口

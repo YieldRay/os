@@ -4,9 +4,6 @@
 #include "kernel_sbi.c"
 #include "kernel_process.c"
 
-// 获取链接器脚本符号
-extern char __bss[], __bss_end[], __stack_top[];
-
 __attribute__((naked))      // 不要生成函数序言/结尾代码
 __attribute__((aligned(4))) // 确保函数地址 4 字节对齐
 void
