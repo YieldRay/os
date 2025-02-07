@@ -135,4 +135,6 @@ void yield(void)
     struct process *prev = current_proc;
     current_proc = next;
     switch_context(&prev->sp, &next->sp);
+    // 这里的关键点是每个进程都有自己独立的内核栈
+    // 通过在上下文切换期间切换sscratch的内容，我们可以从进程被中断的点恢复执行
 }

@@ -1,7 +1,8 @@
-#include "kernel.h"
 #include "common.h"
+#include "kernel.h"
 #include "kernel_memory.c"
 #include "kernel_sbi.c"
+#include "kernel_process.c"
 
 // 获取链接器脚本符号
 extern char __bss[], __bss_end[], __stack_top[];
@@ -12,7 +13,8 @@ void
 kernel_entry(void)
 {
     __asm__ __volatile__(
-        "csrw sscratch, sp\n" // 将当前的 sp (栈指针) 保存到 sscratch 寄存器 (用于保存之前的栈指针)
+
+        "csrrw sp, sscratch, sp\n" // 从 sscratch 中获取运行进程的内核栈
 
         "addi sp, sp, -4 * 31\n" // 在栈上分配空间，用于保存 31 个寄存器 (每个寄存器 4 字节)
 
@@ -48,8 +50,13 @@ kernel_entry(void)
         "sw s10, 4 * 28(sp)\n" // 保存 s10 (保存的寄存器 10) 到 sp + 112
         "sw s11, 4 * 29(sp)\n" // 保存 s11 (保存的寄存器 11) 到 sp + 116
 
-        "csrr a0, sscratch\n" // 从 sscratch 寄存器读取之前的 sp 值，并保存到 a0 中
-        "sw a0, 4 * 30(sp)\n" // 将之前的 sp 值 (保存在 a0 中) 保存到栈上
+        // 获取并保存异常发生时的 sp
+        "csrr a0, sscratch\n"
+        "sw a0,  4 * 30(sp)\n"
+
+        // 重置内核栈
+        "addi a0, sp, 4 * 31\n"
+        "csrw sscratch, a0\n"
 
         "mv a0, sp\n"        // 将当前的 sp 值传递给 a0 作为 handle_trap 的参数
         "call handle_trap\n" // 调用 handle_trap 函数来处理中断
