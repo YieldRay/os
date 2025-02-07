@@ -5,10 +5,9 @@ struct sbiret
 };
 
 /**
+ * 参考 linux 实现：https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/sbi_ecall.c
  * @see https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/
- *
- * TODO: 改成宏以省掉函数栈帧开销
- * 或改为 inline，例如 https://git.musl-libc.org/cgit/musl/tree/arch/riscv64/syscall_arch.h
+ * TODO：是否可以改成宏或inline？
  */
 struct sbiret sbi_call(long arg0, long arg1, long arg2, long arg3, long arg4,
                        long arg5, long fid, long eid)
