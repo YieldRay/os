@@ -4,6 +4,7 @@
         ".env": "dotenv",
         "kernel.h": "c",
         "common.h": "c",
-        "user.h": "c"
+        "user.h": "c",
+        "kernel_io.h": "c"
     }
 }

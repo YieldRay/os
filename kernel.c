@@ -152,6 +152,9 @@ void kernel_main(void)
 
     WRITE_CSR(stvec, (uint32_t)kernel_entry); // 写入 Supervisor Trap Vector Base Address Register
 
+    // 初始化 Virtio 设备
+    virtio_blk_init();
+
     // 初始化进程调度相关全局变量
     idle_proc = create_process(NULL, 0);
     idle_proc->pid = -1; // idle
