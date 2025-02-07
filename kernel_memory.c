@@ -21,6 +21,8 @@ paddr_t alloc_pages(uint32_t n)
  * 一级页表索引（VPN[1] 10位）
  * 二级索引（VPN[0] 10位）
  * 页内偏移（12位）
+ *
+ * 注意：我们在切换进程时切换了页表（sfence.vma 指令）
  */
 void map_page(uint32_t *table1, uint32_t vaddr, paddr_t paddr, uint32_t flags)
 {

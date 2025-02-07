@@ -26,8 +26,16 @@ typedef uint32_t vaddr_t;
 #define va_end __builtin_va_end
 #define va_arg __builtin_va_arg
 
+// std
+
 void *memset(void *buf, char c, size_t n);
 void *memcpy(void *dst, const void *src, size_t n);
 char *strcpy(char *dst, const char *src);
 int strcmp(const char *s1, const char *s2);
 void printf(const char *fmt, ...);
+
+// system call
+#define SCAUSE_ECALL 8
+#define SYS_PUTCHAR 1
+#define SYS_GETCHAR 2
+#define SYS_EXIT 3

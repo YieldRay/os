@@ -3,6 +3,7 @@
         "*.ejs": "html",
         ".env": "dotenv",
         "kernel.h": "c",
-        "common.h": "c"
+        "common.h": "c",
+        "user.h": "c"
     }
 }
