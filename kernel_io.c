@@ -132,7 +132,7 @@ void read_write_disk(void *buf, unsigned sector, int is_write)
 
     // 等待设备完成处理。
     while (virtq_is_busy(vq))
-        ;
+        ; // TODO：这里简单地轮询处理，代码非常简单，效率也很低
 
     // virtio-blk：如果返回非零值，则表示错误。
     if (blk_req->status != 0)

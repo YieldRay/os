@@ -72,6 +72,7 @@ struct trap_frame
 paddr_t alloc_pages(uint32_t n);
 
 #define SATP_SV32 (1u << 31)
+#define SSTATUS_SUM (1 << 18)
 #define PAGE_V (1 << 0) // "Valid" 位（表项已启用）
 #define PAGE_R (1 << 1) // 可读
 #define PAGE_W (1 << 2) // 可写

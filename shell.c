@@ -32,6 +32,27 @@ void main(void)
             printf("Hello world from shell!\n");
         else if (strcmp(cmdline, "exit") == 0)
             exit();
+        if (strncmp(cmdline, "read", 4) == 0)
+        {
+            char *filename = cmdline + 5;
+            char buf[128];
+            int len = readfile(filename, buf, sizeof(buf));
+            buf[len] = '\0';
+            printf("%s\n", buf);
+        }
+        // write filename content
+        else if (strncmp(cmdline, "write", 5) == 0)
+        {
+            char *filename = cmdline + 6;
+            char *pos = strchr(filename, ' ');
+            if (pos == NULL)
+            {
+                printf("invalid command: %s\n", cmdline);
+                continue;
+            }
+            char *content = pos + 1;
+            writefile(filename, content, strlen(content));
+        }
         else
             printf("unknown command: %s\n", cmdline);
     }

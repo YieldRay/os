@@ -3,6 +3,7 @@
 #include "kernel_memory.c"
 #include "kernel_sbi.c"
 #include "kernel_process.c"
+#include "kernel_fs.c"
 
 __attribute__((naked))      // 不要生成函数序言/结尾代码
 __attribute__((aligned(4))) // 确保函数地址 4 字节对齐
@@ -112,7 +113,6 @@ void handle_syscall(struct trap_frame *f)
                 f->a0 = ch;
                 break;
             }
-
             yield();
         }
         break;
@@ -122,6 +122,37 @@ void handle_syscall(struct trap_frame *f)
         // TODO: 释放进程持有的资源
         yield();
         PANIC("unreachable");
+    case SYS_READFILE:
+    case SYS_WRITEFILE:
+    {
+        const char *filename = (const char *)f->a0;
+        char *buf = (char *)f->a1;
+        int len = f->a2;
+        struct file *file = fs_lookup(filename);
+        if (!file)
+        {
+            printf("file not found: %s\n", filename);
+            f->a0 = -1;
+            break;
+        }
+
+        if (len > (int)sizeof(file->data))
+            len = file->size;
+
+        if (f->a3 == SYS_WRITEFILE)
+        {
+            memcpy(file->data, buf, len);
+            file->size = len;
+            fs_flush();
+        }
+        else
+        {
+            memcpy(buf, file->data, len);
+        }
+
+        f->a0 = len;
+        break;
+    }
     default:
         PANIC("unexpected syscall a3=%x\n", f->a3);
     }
@@ -154,6 +185,9 @@ void kernel_main(void)
 
     // 初始化 Virtio 设备
     virtio_blk_init();
+
+    // 初始化文件系统
+    fs_init();
 
     // 初始化进程调度相关全局变量
     idle_proc = create_process(NULL, 0);
