@@ -2,9 +2,27 @@
 
 # CPU 模式
 
--   M-mode: (machine) OpenSBI（即 BIOS）运行的模式
+-   M-mode: (machine) **OpenSBI**（即 BIOS）运行的模式
 -   S-mode: (supervisor) 内核运行的模式，又称“内核模式”
 -   U-mode: (user) 应用运行的模式，又称“用户模式”
+
+```
+       +-----------------------------------------+
+U-mode |c1CF          Applications               | U-mode
+       +-----------------------------------------+
+                           ^
+                           |System Calls
+                           v
+       +-----------------------------------------+
+S-mode |c0DB     Operating System Kernel         | S-mode
+       +-----------------------------------------+
+                           ^
+                           |SBI
+                           v
+       +-----------------------------------------+
+M-mode |cF90 Platform Runtime Firmware (SEE)     | M-mode
+       +-----------------------------------------+
+```
 
 # CSR 特权指令
 

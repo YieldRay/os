@@ -4,8 +4,12 @@ struct sbiret
     long value;
 };
 
-// TODO: 改成宏以省掉函数栈帧开销
-// 或改为 inline，例如 https://git.musl-libc.org/cgit/musl/tree/arch/riscv64/syscall_arch.h
+/**
+ * @see https://courses.stephenmarz.com/my-courses/cosc562/risc-v/opensbi-calls/
+ *
+ * TODO: 改成宏以省掉函数栈帧开销
+ * 或改为 inline，例如 https://git.musl-libc.org/cgit/musl/tree/arch/riscv64/syscall_arch.h
+ */
 struct sbiret sbi_call(long arg0, long arg1, long arg2, long arg3, long arg4,
                        long arg5, long fid, long eid)
 {

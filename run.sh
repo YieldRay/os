@@ -11,6 +11,8 @@ CFLAGS="-std=c11 -O2 -g3 -Wall -Wextra --target=riscv32-unknown-elf -fno-stack-p
 # -ffreestanding       不使用主机环境标准库
 # -nostdlib            不链接标准库
 
+# TODO: 使用Makefile替代这里的手动编译？
+
 # 构建一个用户空间程序，并转换为原始二进制（而不是elf），因为我们的操作系统很简单
 $CC $CFLAGS -Wl,-Tuser.ld -Wl,-Map=shell.map -o shell.elf shell.c user.c common.c
 $OBJCOPY --set-section-flags .bss=alloc,contents -O binary shell.elf shell.bin
