@@ -123,6 +123,10 @@ void handle_syscall(struct trap_frame *f)
         // TODO: 释放进程持有的资源
         yield();
         PANIC("unreachable");
+    case SYS_SHUTDOWN:
+        printf("shuting down\n");
+        shutdown();
+        break;
     case SYS_READFILE:
     case SYS_WRITEFILE:
     {
@@ -199,7 +203,8 @@ void kernel_main(void)
     create_process(_binary_shell_bin_start, (size_t)_binary_shell_bin_size);
     yield();
 
-    printf("Hello, %s!\n", "RISC-V");
+    // shell 进程已退出
+    printf("Good bye!");
 
     for (;;)
     {

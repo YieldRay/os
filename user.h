@@ -6,6 +6,7 @@ int getchar(void);
 __attribute__((noreturn)) void exit(void);
 int readfile(const char *filename, char *buf, int len);
 int writefile(const char *filename, const char *buf, int len);
+int shutdown(void);
 
 extern char _binary_shell_bin_start[];
 extern char _binary_shell_bin_size[];

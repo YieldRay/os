@@ -47,3 +47,4 @@ void printf(const char *fmt, ...);
 #define SYS_EXIT 3
 #define SYS_READFILE 4
 #define SYS_WRITEFILE 5
+#define SYS_SHUTDOWN 6
