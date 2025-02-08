@@ -4,7 +4,7 @@
 /**
  * linux实现：https://git.musl-libc.org/cgit/musl/tree/arch/riscv64/syscall_arch.h
  */
-int syscall(int sysno, int arg0, int arg1, int arg2)
+static inline int syscall(int sysno, int arg0, int arg1, int arg2)
 {
     register int a0 __asm__("a0") = arg0;
     register int a1 __asm__("a1") = arg1;
