@@ -1,4 +1,5 @@
 #include "common.h"
+#include "user.h"
 
 /**
  * linux实现：https://git.musl-libc.org/cgit/musl/tree/arch/riscv64/syscall_arch.h

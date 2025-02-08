@@ -1,3 +1,5 @@
+#pragma once
+
 #define SECTOR_SIZE 512
 #define VIRTQ_ENTRY_NUM 16
 #define VIRTIO_DEVICE_BLK 2
@@ -81,3 +83,9 @@ struct virtio_blk_req
     // 第三个描述符：设备可写(VIRTQ_DESC_F_WRITE)
     uint8_t status;
 } __attribute__((packed));
+
+void virtio_blk_init(void);
+struct virtio_virtq *virtq_init(unsigned index);
+void virtq_kick(struct virtio_virtq *vq, int desc_index);
+bool virtq_is_busy(struct virtio_virtq *vq);
+void read_write_disk(void *buf, unsigned sector, int is_write);

@@ -1,3 +1,5 @@
+#pragma once
+
 #define FILES_MAX 2
 #define DISK_MAX_SIZE align_up(sizeof(struct file) * FILES_MAX, SECTOR_SIZE)
 
@@ -31,4 +33,3 @@ struct file
     char data[1024]; // 文件内容
     size_t size;     // 文件大小
 };
-
